@@ -35,4 +35,6 @@
 - 已读取 issue #3 和现有代码，从最新 main 创建 feature/issue-3-multiplatform-release 分支。
 - 等待 PR #4 的远端桌面测试和四平台试打包；iOS 不读取任何签名证书。
 - 首轮远端桌面类型检查、构建和测试通过。Android 环境安装失败：第三方 action 默认安装已下架的 tools 包；已改成明确安装 SDK 36 和构建工具，继续远端验证。
+- 首轮 Linux deb、Windows exe、iOS 未签名 IPA 已实际生成；已查看远端手机页面截图，窄屏没有横向溢出，并把保存位置文案改成“本机”。
+- 仅修改 Markdown 文档时不再重复试打包，Release 发布和手动打包不受影响。
 - Android 先生成可安装的调试签名包，说明了不能保证覆盖升级的限制；正式商店签名尚未加入。

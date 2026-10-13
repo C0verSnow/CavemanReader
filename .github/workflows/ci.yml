@@ -2,8 +2,10 @@ name: Desktop CI
 on:
   push:
     branches: [main, 'feature/**']
+    paths-ignore: ['**/*.md']
   pull_request:
     branches: [main]
+    paths-ignore: ['**/*.md']
 permissions:
   contents: read
 jobs:

@@ -82,7 +82,7 @@ export function BooksPage() {
           <button className="primary" type="submit">{editingId ? '保存修改' : '加入书架'}</button>
           {editingId ? <button className="cancel" type="button" onClick={resetDraft}>取消编辑</button> : null}
         </fieldset>
-      </form><p className="storage-note">书籍信息保存在这台电脑上。</p>
+      </form><p className="storage-note">书籍信息保存在本机上。</p>
     </aside>
   </div>;
 }
