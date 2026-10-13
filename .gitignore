@@ -4,3 +4,6 @@ dist-electron/
 playwright-report/
 test-results/
 .DS_Store
+release/
+android/
+ios/
