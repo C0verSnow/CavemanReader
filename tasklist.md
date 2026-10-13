@@ -19,6 +19,10 @@
 - issue #3 已新增 Capacitor 手机端入口、窄屏和安全区域布局，并补充手机书架保存、浏览器原生接口与危险网址拦截测试。
 - 已更新依赖锁定文件，安装时只解析依赖并禁用安装脚本，没有执行本地编译。
 - 已创建草稿 PR #4：https://github.com/C0verSnow/CavemanReader/pull/4 。
+- issue #3 最终功能代码 7360adf 的远端类型检查、构建和全部 7 项测试通过：https://github.com/C0verSnow/CavemanReader/actions/runs/38341125989 。
+- issue #3 四个平台均实际生成安装包：Linux deb、Windows exe、Android 调试签名 apk、iOS 未签名 ipa。最终远端打包通过：https://github.com/C0verSnow/CavemanReader/actions/runs/38341125933 。
+- 已下载最终 IPA 到 release/CavemanReader-ios-unsigned.ipa，并静态检查包内有真机应用和网页资源，没有签名和描述文件；可以交给全能签处理。
+- 已查看远端手机页面截图，窄屏没有横向溢出，并把保存位置文案改成“本机”。
 - 第二轮远端检查已通过：类型检查、构建和 5 项自动测试全部通过。
 - 最后代码检查补充了开发模式热更新脚本的授权，并增加开发启动测试。
 - 最终功能代码 a42dc8e 的远端类型检查、构建和全部 6 项测试通过：https://github.com/C0verSnow/CavemanReader/actions/runs/38339685709 。
@@ -30,11 +34,12 @@
 - 按用户约定，不进行本地构建、编译或会触发编译的测试。
 - 书籍同步和桌面内置网页下载功能仍未实现。
 - 真实 DeepSeek 登录需用户联网操作，自动测试使用固定网页。
+- issue #3 没有创建正式 Release，实际上传步骤等合并后发布含新代码的标签时执行。
+- 手机真机登录、IPA 经全能签安装、Android 真机安装尚未验证；Android 正式商店签名尚未加入。
+- PR #4 保留待合并，issue #3 将在 PR 合并后自动关闭。
 
 ## 在做：
 - 已读取 issue #3 和现有代码，从最新 main 创建 feature/issue-3-multiplatform-release 分支。
-- 等待 PR #4 的远端桌面测试和四平台试打包；iOS 不读取任何签名证书。
-- 首轮远端桌面类型检查、构建和测试通过。Android 环境安装失败：第三方 action 默认安装已下架的 tools 包；已改成明确安装 SDK 36 和构建工具，继续远端验证。
-- 首轮 Linux deb、Windows exe、iOS 未签名 IPA 已实际生成；已查看远端手机页面截图，窄屏没有横向溢出，并把保存位置文案改成“本机”。
-- 仅修改 Markdown 文档时不再重复试打包，Release 发布和手动打包不受影响。
-- Android 先生成可安装的调试签名包，说明了不能保证覆盖升级的限制；正式商店签名尚未加入。
+- 无。issue #3 的实现、说明、远端验证与安装包检查已完成。
+- 过程记录：首轮 Android 环境安装默认下载了已下架的 tools 包，改为明确安装 SDK 36 后通过。
+- 只含文档改动的 PR 不运行打包；仅改文档的分支推送不运行桌面 CI。Release 发布和手动打包不受影响。
