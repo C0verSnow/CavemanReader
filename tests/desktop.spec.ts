@@ -31,13 +31,14 @@ test.afterEach(async () => {
   await rm(profile, { recursive: true, force: true });
 });
 
-test('新增、搜索、编辑、删除以及重启后保存', async () => {
+test('新增、搜索、编辑、删除以及重启后保存', async ({}, testInfo) => {
   await page.getByRole('textbox', { name: '书名' }).fill('活着');
   await page.getByRole('textbox', { name: '作者', exact: true }).fill('余华');
   await page.getByLabel('阅读状态').selectOption('在读');
   await page.getByRole('textbox', { name: '备注' }).fill('读到第三章');
   await page.getByRole('button', { name: '加入书架' }).click();
   await expect(page.getByRole('heading', { name: '活着', exact: true })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('library.png'), fullPage: true });
   await desktop.close();
   await launch();
   await expect(page.getByText('读到第三章')).toBeVisible();
