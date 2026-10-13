@@ -1,0 +1,20 @@
+appId: com.c0versnow.cavemanreader
+productName: Caveman Reader
+directories:
+  output: release
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - package.json
+asar: true
+linux:
+  target: deb
+  category: Office
+  maintainer: C0verSnow <C0verSnow@users.noreply.github.com>
+win:
+  target: nsis
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+artifactName: CavemanReader-${version}-${os}-${arch}.${ext}

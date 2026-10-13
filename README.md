@@ -1,6 +1,6 @@
 # Caveman Reader
 
-用 React + TypeScript + Electron 构建的桌面应用。包含两个独立页面：书籍管理和内置浏览器。
+用 React + TypeScript 构建的书籍管理应用。桌面端使用 Electron，Android 和 iOS 使用 Capacitor。包含书籍管理和内置浏览器。
 
 ## 功能
 
@@ -28,7 +28,40 @@ npm start         # 打开上一步生成的桌面应用
 npm test          # 在已构建代码上执行单元测试和 Electron 功能测试
 ```
 
-Linux 无桌面环境时使用 `xvfb-run -a npm test`。当前版本从源码启动，尚未生成安装包。
+Linux 无桌面环境时使用 `xvfb-run -a npm test`。
+
+## 安装包与自动发布
+
+`.github/workflows/release.yml` 在 GitHub Release **发布**时构建以下文件，全部构建成功后一起上传到触发流程的 Release。草稿 Release 不触发构建。工作流从 Release 的标签取代码，因此发布的标签必须包含本次新增的工作流和代码；旧标签无法使用新配置。
+
+| 平台 | 文件 | 说明 |
+| --- | --- | --- |
+| Linux x64 | `.deb` | Debian / Ubuntu 安装包 |
+| Windows x64 | `.exe` | NSIS 安装程序，没有 Windows 代码签名 |
+| Android 9+ | `CavemanReader-android-debug.apk` | 可安装的调试签名包，供个人试用；不是商店发行包 |
+| iOS 15+ | `CavemanReader-ios-unsigned.ipa` | 真机 Release 构建，未签名；下载后用全能签自行签名安装 |
+
+不需要配置 Apple 证书。IPA 内含 `Payload/App.app`，不经过需要证书的 Xcode 导出步骤。未签名 IPA 不能直接安装，签名工具与设备兼容性需实际安装确认。
+
+Android 目前使用构建机的临时调试签名，不同构建之间可能无法直接覆盖安装。卸载会删除本机书籍数据，升级前请先备份；正式发行时需要改用固定的私有签名密钥。
+
+PR 会在 GitHub 远端试打四个平台的安装包，结果保留在 Actions 的 `package-*` artifacts 中 7 天，不上传到 Release。合并后也可以在 Actions → **Build release packages** → **Run workflow** 手动试打包；手动运行同样只保存 artifacts。真正发布时，先修改 `package.json` 中的版本号，再创建对应标签并发布 Release（例如 `v0.2.0`）。失败时修复构建问题后重新运行失败的流程；上传会替换同名文件。
+
+手机端复用书籍的增删改查、搜索和本机保存，布局适应窄屏和安全区域。网页通过 Capacitor 的[应用内系统浏览器](https://capacitorjs.com/docs/apis/inappbrowser)打开，关闭后回到原页面，第三方网页不进入保存书籍的应用 WebView。浏览历史和登录由系统浏览器管理，手机端不提供桌面端的网页常驻区域与前进、刷新工具栏。iOS 系统浏览器是否保留特定网站登录需实机确认。
+
+手机端书籍保存在应用 WebView 的 localStorage；它与桌面端的数据不互通，清理应用数据或卸载会删除书籍。当前不支持跨设备同步。
+
+原生手机工程由锁定版本的 Capacitor 模板在 CI 中生成，`android/` 和 `ios/` 不入库。远端分别使用 JDK 21 / Android SDK 36，以及 macOS 26 / Xcode 26。打包命令供用户手动运行或远端 CI 使用：
+
+```sh
+npm run package:desktop -- --linux --x64  # 在 Linux 构建 deb
+npm run package:desktop -- --win --x64    # 在 Windows 构建 exe
+npm run build:web
+npm run mobile:prepare -- android        # 生成和同步 Android 工程
+npm run mobile:prepare -- ios            # 在 macOS 生成和同步 iOS 工程
+```
+
+Android Gradle 和 iOS 未签名归档、IPA 封装命令详见 `release.yml`。原生工程的版本名称取自 `package.json`，构建编号取自 GitHub Actions 的运行编号。
 
 ## 自动检查
 
