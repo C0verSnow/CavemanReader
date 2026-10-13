@@ -14,7 +14,7 @@
 需要 Node.js 24 和 npm，以及支持 Electron 的 macOS、Windows 或 Linux 桌面环境。
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 

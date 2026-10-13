@@ -95,9 +95,10 @@ function ensureBrowser() {
     return { action: 'deny' };
   });
   contents.on('did-start-loading', () => { state = { ...state, error: null }; publish(); });
-  for (const name of ['did-stop-loading', 'did-navigate', 'did-navigate-in-page', 'page-title-updated'] as const) {
-    contents.on(name, publish);
-  }
+  contents.on('did-stop-loading', publish);
+  contents.on('did-navigate', publish);
+  contents.on('did-navigate-in-page', publish);
+  contents.on('page-title-updated', publish);
   contents.on('did-fail-load', (_event, code, _description, _url, isMainFrame) => {
     if (isMainFrame && code !== -3) {
       state = { ...state, error: '网页未能打开，请检查网络后重试。' };
